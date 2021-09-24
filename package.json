@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "test": "rm -rf ./hei && node ./bin/index.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "keywords": [],
   "author": "",
@@ -31,10 +32,5 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E $HUSKY_GIT_PARAMS"
-    }
   }
 }
