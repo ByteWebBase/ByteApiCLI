@@ -1,5 +1,5 @@
 # example
 
 ```shell
-byte-api-cli init  
+byte-api-cli init
 ```

@@ -1,3 +1,3 @@
 # byte-api-cli
 
-根据.dbml文件生成Restful接口
+根据.dbml 文件生成 Restful 接口
