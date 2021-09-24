@@ -24,10 +24,17 @@
     "prettier": "^2.3.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E $HUSKY_GIT_PARAMS"
+    }
   }
 }
