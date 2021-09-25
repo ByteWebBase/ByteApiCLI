@@ -75,7 +75,7 @@ router.get("/auth/github/callback", async (ctx) => {
     `;
 
   setTimeout(() => {
-    console.log("log success");
+    console.log("login success");
     process.exit(0);
   }, 3000);
 });
