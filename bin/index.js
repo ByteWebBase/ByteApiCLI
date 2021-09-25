@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import fs from "fs";
 import execa from "execa";
 import path from "path";
@@ -8,7 +7,7 @@ import createIndexTemplate from "./createIndexTemplate.js";
 import createPackageTemplate from "./createPackageTemplate.js";
 import questions from "./questions/index.js";
 import { createConfig } from "./config.js";
-
+import { fileURLToPath } from "url";
 import { Command } from "commander/esm.mjs";
 const program = new Command();
 
@@ -28,10 +27,19 @@ function mySum(value, total) {
 
 program
   .command("login")
-  .argument("<first>", "integer argument", myParseInt)
-  .argument("[second]", "integer argument", myParseInt, 1000)
-  .action((first, second) => {
-    console.log(`${first} + ${second} = ${first + second}`);
+  // .argument("<first>", "integer argument", myParseInt)
+  // .argument("[second]", "integer argument", myParseInt, 1000)
+  .action(() => {
+    // console.log('login')
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const koaPath = __dirname + "/oauth/github.js";
+    console.log(koaPath); // 当前文件所在的绝对路径。
+    execa("node", [koaPath], {
+      // cwd: getRootPath(),
+      stdio: [2, 2, 2],
+    });
+    // console.log(`${first} + ${second} = ${first + second}`);
   });
 
 program
@@ -43,38 +51,36 @@ program
 
 program
   .command("build")
-  .argument("<value...>", "values to be summed", mySum, 0)
-  .action((total) => {
-    console.log(`sum is ${total}`);
+  // .argument("<value...>", "values to be summed", mySum, 0)
+  .action(async () => {
+    const answer = await questions();
+
+    const config = createConfig(answer);
+
+    // // 1. 创建项目文件夹
+    console.log(chalk.blue(`创建项目文件夹:${config.packageName}`));
+    fs.mkdirSync(getRootPath());
+
+    // 2. 创建 index.js
+    console.log(chalk.blue(`创建 index.js`));
+    fs.writeFileSync(`${getRootPath()}/index.js`, createIndexTemplate(config));
+    // 3. 创建 package.json
+    console.log(chalk.blue(`创建 package.json`));
+    fs.writeFileSync(
+      `${getRootPath()}/package.json`,
+      createPackageTemplate(config)
+    );
+
+    // 4. 安装依赖
+    console.log(chalk.blue(`安装依赖`));
+    execa("yarn", {
+      cwd: getRootPath(),
+      stdio: [2, 2, 2],
+    });
+
+    function getRootPath() {
+      return path.resolve(process.cwd(), config.packageName);
+    }
   });
 
 program.parse();
-
-// const answer = await questions();
-
-// const config = createConfig(answer);
-
-// // // 1. 创建项目文件夹
-// console.log(chalk.blue(`创建项目文件夹:${config.packageName}`));
-// fs.mkdirSync(getRootPath());
-
-// // 2. 创建 index.js
-// console.log(chalk.blue(`创建 index.js`));
-// fs.writeFileSync(`${getRootPath()}/index.js`, createIndexTemplate(config));
-// // 3. 创建 package.json
-// console.log(chalk.blue(`创建 package.json`));
-// fs.writeFileSync(
-//   `${getRootPath()}/package.json`,
-//   createPackageTemplate(config)
-// );
-
-// // 4. 安装依赖
-// console.log(chalk.blue(`安装依赖`));
-// execa("yarn", {
-//   cwd: getRootPath(),
-//   stdio: [2, 2, 2],
-// });
-
-// function getRootPath() {
-//   return path.resolve(process.cwd(), config.packageName);
-// }
