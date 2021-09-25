@@ -36,7 +36,6 @@ router.get("/auth/github/callback", async (ctx) => {
   //     proxy: true,
   //     data: params
   // })
-  console.log(process.env.NODE_ENV);
 
   let res = await axios.post(
     "https://github.com/login/oauth/access_token",
