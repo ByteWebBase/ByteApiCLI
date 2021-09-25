@@ -9,31 +9,72 @@ import createPackageTemplate from "./createPackageTemplate.js";
 import questions from "./questions/index.js";
 import { createConfig } from "./config.js";
 
-const answer = await questions();
+import { Command } from "commander/esm.mjs";
+const program = new Command();
 
-const config = createConfig(answer);
-
-// // 1. 创建项目文件夹
-console.log(chalk.blue(`创建项目文件夹:${config.packageName}`));
-fs.mkdirSync(getRootPath());
-
-// 2. 创建 index.js
-console.log(chalk.blue(`创建 index.js`));
-fs.writeFileSync(`${getRootPath()}/index.js`, createIndexTemplate(config));
-// 3. 创建 package.json
-console.log(chalk.blue(`创建 package.json`));
-fs.writeFileSync(
-  `${getRootPath()}/package.json`,
-  createPackageTemplate(config)
-);
-
-// 4. 安装依赖
-console.log(chalk.blue(`安装依赖`));
-execa("yarn", {
-  cwd: getRootPath(),
-  stdio: [2, 2, 2],
-});
-
-function getRootPath() {
-  return path.resolve(process.cwd(), config.packageName);
+function myParseInt(value, dummyPrevious) {
+  // parseInt takes a string and a radix
+  const parsedValue = parseInt(value, 10);
+  if (isNaN(parsedValue)) {
+    throw new commander.InvalidArgumentError("Not a number.");
+  }
+  return parsedValue;
 }
+
+// The previous value passed to the custom processing is used when processing variadic values.
+function mySum(value, total) {
+  return total + myParseInt(value);
+}
+
+program
+  .command("login")
+  .argument("<first>", "integer argument", myParseInt)
+  .argument("[second]", "integer argument", myParseInt, 1000)
+  .action((first, second) => {
+    console.log(`${first} + ${second} = ${first + second}`);
+  });
+
+program
+  .command("logout")
+  .argument("<value...>", "values to be summed", mySum, 0)
+  .action((total) => {
+    console.log(`sum is ${total}`);
+  });
+
+program
+  .command("build")
+  .argument("<value...>", "values to be summed", mySum, 0)
+  .action((total) => {
+    console.log(`sum is ${total}`);
+  });
+
+program.parse();
+
+// const answer = await questions();
+
+// const config = createConfig(answer);
+
+// // // 1. 创建项目文件夹
+// console.log(chalk.blue(`创建项目文件夹:${config.packageName}`));
+// fs.mkdirSync(getRootPath());
+
+// // 2. 创建 index.js
+// console.log(chalk.blue(`创建 index.js`));
+// fs.writeFileSync(`${getRootPath()}/index.js`, createIndexTemplate(config));
+// // 3. 创建 package.json
+// console.log(chalk.blue(`创建 package.json`));
+// fs.writeFileSync(
+//   `${getRootPath()}/package.json`,
+//   createPackageTemplate(config)
+// );
+
+// // 4. 安装依赖
+// console.log(chalk.blue(`安装依赖`));
+// execa("yarn", {
+//   cwd: getRootPath(),
+//   stdio: [2, 2, 2],
+// });
+
+// function getRootPath() {
+//   return path.resolve(process.cwd(), config.packageName);
+// }
