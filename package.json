@@ -1,6 +1,6 @@
 {
-  "name": "byte-api-cli",
-  "version": "1.0.0",
+  "name": "@byte-web-base/byte-api-cli",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "type": "module",
