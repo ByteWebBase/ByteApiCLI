@@ -2,4 +2,6 @@
 
 根据.dbml 文件生成 Restful 接口
 
-## commitlintrc
+## lint-staged+prettier 代码规范
+
+###
