@@ -28,3 +28,7 @@ byte-api-cli build database.dbml
 ```
 
 ![](https://moonstarimg.oss-cn-hangzhou.aliyuncs.com/picgo_img/Peek-2021-09-26-10-43.gif)
+
+ApiFox 测试 API
+
+![](https://moonstarimg.oss-cn-hangzhou.aliyuncs.com/picgo_img/Peek-2021-09-26-10-53.gif)
