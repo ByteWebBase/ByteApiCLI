@@ -2,7 +2,12 @@
 
 根据.dbml 文件生成 Restful 接口
 
-##
+## Installation
+
+```shell
+npm i -g @byte-web-base/byte-api-cli
+
+```
 
 ## Github OAuth 登录
 
