@@ -1,6 +1,10 @@
+<% if (database.MongoDB) { %>
 module.exports = {
     db: {
-        url:"mongodb://localhost:27017/test",
+        url:"<%= database.database_url %>",
         options: { useNewUrlParser: true }
     }
 }
+<% } %>
+
+

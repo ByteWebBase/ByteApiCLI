@@ -1,54 +1,17 @@
-const Koa = require("koa");
+const Koa = require('koa')
+const app = new Koa()
 
-<% if (middleware.router) { %>
-const Router = require("koa-router");
-  <% } %>
+const config = require('./conf')
 
-<% if (middleware.static) { %>
-const serve = require("koa-static");
-  <% } %>
-
-<% if (middleware.views) { %>
-const views = require("koa-views");
-  <% } %>
+const { loadModel } = require('./framework/loader')
+loadModel(config)(app)
 
 
-<% if (middleware.body) { %>
-const body = require("koa-body");
-  <% } %>
-
-const app = new Koa();
-
-
-<% if (middleware.static) { %>
-app.use(serve(__dirname + "/static"));
-  <% } %>
-
-<% if (middleware.views) { %>
-app.use(
-  views(__dirname + "/views", {
-    extension: "pug",
-  })
-);
-  <% } %>
-
-<% if (middleware.body) { %>
-app.use(
-  body({
-    multipart: true,
-  })
-);
-  <% } %>
-
-
-<% if (middleware.router) { %>
-const router = new Router();
-router.get("/", (ctx) => {
-  ctx.body = "hello hei";
-});
-app.use(router.routes());
-  <% } %>
-
+const bodyParser = require('koa-bodyparser')
+app.use(bodyParser())
+app.use(require('koa-static')(__dirname + '/'))
+const restful = require('./framework/router')
+app.use(restful)
 
 app.listen(<%= port %>, () => {
   console.log("open server localhost:<%= port %>");

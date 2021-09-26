@@ -10,7 +10,6 @@ export default (config) => {
     path.resolve(__dirname, "../template/index.ejs")
   );
   const code = ejs.render(templateCode.toString(), {
-    middleware: config.middleware,
     port: config.port,
   });
 

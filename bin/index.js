@@ -5,6 +5,7 @@ import path from "path";
 import chalk from "chalk";
 import createIndexTemplate from "./createIndexTemplate.js";
 import createPackageTemplate from "./createPackageTemplate.js";
+import createConfTemplate from "./createConfTemplate.js";
 import questions from "./questions/index.js";
 import { createConfig } from "./config.js";
 import { fileURLToPath } from "url";
@@ -53,7 +54,6 @@ program
   .action(async (value) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-
     const answer = await questions();
 
     const config = createConfig(answer);
@@ -88,6 +88,8 @@ program
     );
 
     // 创建数据库配置文件
+    console.log(chalk.blue(`创建 数据库配置文件`));
+    fs.writeFileSync(`${getRootPath()}/conf.js`, createConfTemplate(config));
 
     // 4. 安装依赖
     console.log(chalk.blue(`安装依赖`));

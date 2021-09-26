@@ -11,7 +11,6 @@ export default (config) => {
     path.resolve(__dirname, "../template/package.ejs")
   );
   const code = ejs.render(templateCode.toString(), {
-    middleware: config.middleware,
     packageName: config.packageName,
   });
 
