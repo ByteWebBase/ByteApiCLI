@@ -21,6 +21,8 @@ byte-api-cli login
 
 ### lint-staged+prettier 代码规范
 
+代码规范让系统更加健壮
+
 ![](https://moonstarimg.oss-cn-hangzhou.aliyuncs.com/picgo_img/husky_lint.gif)
 
 ### cli 创建 api 项目
