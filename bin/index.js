@@ -42,17 +42,14 @@ program
     // console.log(`${first} + ${second} = ${first + second}`);
   });
 
-program
-  .command("logout")
-  .argument("<value...>", "values to be summed", mySum, 0)
-  .action((total) => {
-    console.log(`sum is ${total}`);
-  });
+program.command("logout").action(() => {
+  console.log(`logout`);
+});
 
 program
   .command("build")
-  // .argument("<value...>", "values to be summed", mySum, 0)
-  .action(async () => {
+  .argument("<path_to.dbml>", "database.dbml")
+  .action(async (value) => {
     const answer = await questions();
 
     const config = createConfig(answer);
