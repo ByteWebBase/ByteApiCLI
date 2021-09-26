@@ -9,6 +9,7 @@ import questions from "./questions/index.js";
 import { createConfig } from "./config.js";
 import { fileURLToPath } from "url";
 import { Command } from "commander/esm.mjs";
+
 const program = new Command();
 
 function myParseInt(value, dummyPrevious) {
@@ -50,6 +51,9 @@ program
   .command("build")
   .argument("<path_to.dbml>", "database.dbml")
   .action(async (value) => {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+
     const answer = await questions();
 
     const config = createConfig(answer);
@@ -66,6 +70,22 @@ program
     fs.writeFileSync(
       `${getRootPath()}/package.json`,
       createPackageTemplate(config)
+    );
+
+    console.log(`${getRootPath()}/framework`);
+
+    fs.mkdirSync(`${getRootPath()}/framework`);
+    fs.copyFileSync(
+      __dirname + "/template/framework/api.js",
+      `${getRootPath()}/framework/api.js`
+    );
+    fs.copyFileSync(
+      __dirname + "/template/framework/loader.js",
+      `${getRootPath()}/framework/loader.js`
+    );
+    fs.copyFileSync(
+      __dirname + "/template/framework/router.js",
+      `${getRootPath()}/framework/router.js`
     );
 
     // 4. 安装依赖
