@@ -91,12 +91,34 @@ program
     console.log(chalk.blue(`创建 数据库配置文件`));
     fs.writeFileSync(`${getRootPath()}/conf.js`, createConfTemplate(config));
 
+    // 创建数据库模型文件
+
+    fs.mkdirSync(`${getRootPath()}/model`);
+    fs.copyFileSync(
+      __dirname + "/template/model/problem.js",
+      `${getRootPath()}/model/problem.js`
+    );
+    fs.copyFileSync(
+      __dirname + "/template/model/user.js",
+      `${getRootPath()}/model/user.js`
+    );
+
     // 4. 安装依赖
-    console.log(chalk.blue(`安装依赖`));
-    execa("yarn", {
-      cwd: getRootPath(),
-      stdio: [2, 2, 2],
-    });
+
+    // execa("yarn", {
+    //   cwd: getRootPath(),
+    //   stdio: [2, 2, 2],
+    // });
+
+    console.log(chalk.greenBright(`======================`));
+
+    console.log(chalk.greenBright(`    cd ${answer.packageName}`));
+    console.log(chalk.greenBright(`    yarn`));
+    console.log(chalk.greenBright(`    yarn start`));
+
+    console.log(chalk.greenBright(`======================`));
+
+    // console.log(chalk.blue(`安装依赖`));
 
     function getRootPath() {
       return path.resolve(process.cwd(), config.packageName);
