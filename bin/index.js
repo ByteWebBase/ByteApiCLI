@@ -72,8 +72,7 @@ program
       createPackageTemplate(config)
     );
 
-    console.log(`${getRootPath()}/framework`);
-
+    // copy不变的文件
     fs.mkdirSync(`${getRootPath()}/framework`);
     fs.copyFileSync(
       __dirname + "/template/framework/api.js",
@@ -87,6 +86,8 @@ program
       __dirname + "/template/framework/router.js",
       `${getRootPath()}/framework/router.js`
     );
+
+    // 创建数据库配置文件
 
     // 4. 安装依赖
     console.log(chalk.blue(`安装依赖`));
